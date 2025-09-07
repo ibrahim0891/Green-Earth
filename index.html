@@ -9,6 +9,10 @@
         <link rel="stylesheet" type="text/css"
             href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css" />
 
+
+
+
+
         <style type="text/tailwindcss">
             @theme{
                 --color-green-dark : #15803d; 
@@ -25,11 +29,14 @@
                 .horizontal-spacer{
                     @apply my-12; 
                 }
+                .active {
+                    @apply bg-green-600  text-green-50  ; 
+                }
             }
         </style>
     </head>
 
-    <body class="bg-green-50"> 
+    <body class="bg-green-50">
         <section class="bg-green-dark text-white sticky top-0 z-20">
             <nav class="flex flex-col sm:flex-row gap-6 items-center justify-between px-6 py-3 max-w-[1650px] m-auto">
                 <div class="w-full ">
@@ -67,7 +74,7 @@
 
                 <button class="rounded-full bg-amber-300 text-green-600 px-5 py-3 w-full sm:w-auto whitespace-nowrap">
                     Plant a Tree
-                </button> 
+                </button>
             </nav>
         </section>
 
@@ -89,81 +96,31 @@
             <!-- tree display section  -->
             <section class="space-y-6 ">
                 <h2 class="section-title "> Choose Your Tree</h2>
-                <div class="grid grid-cols-1 lg:grid-cols-[1fr_2fr_1fr] xl:grid-cols-[1fr_3fr_1fr] 2xl:grid-cols-[1fr_5fr_1fr] gap-8">
+                <div
+                    class="grid grid-cols-1 lg:grid-cols-[1fr_2fr_1fr] xl:grid-cols-[1fr_3fr_1fr] 2xl:grid-cols-[1fr_5fr_1fr] gap-8">
                     <!-- category -->
                     <div class="space-y-4 ">
                         <h3 class="text-2xl font-bold">Categories </h3>
-                        <div class="text-green-800 flex *:px-6 *:py-3 *:rounded-md overflow-auto lg:grid">
-                            <span class="shrink-0 active bg-green-600 text-green-50"> Fruit trees</span>
-                            <span class="shrink-0 "> Fruit trees</span>
-                            <span class="shrink-0 "> Fruit trees</span>
-                            <span class="shrink-0 "> Al Trees </span>
-                            <span class="shrink-0 "> Fruit trees</span>
-                            <span class="shrink-0 "> Fruit trees</span>
+                        <div class="text-green-800 flex *:px-6 *:py-3 *:rounded-md *:transition-all *:hover:scale-105 lg:overflow-hidden  overflow-y-auto lg:grid"
+                            id="categories">
+                             
+                            <div class="flex items-center justify-center w-full py-3">
+                                <l-ring size="40" stroke="5" bg-opacity="0" speed="2" color="black"></l-ring>
+                            </div>
+
                         </div>
                     </div>
                     <!-- cards container  -->
-                     <div>
-                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-8 md:max-h-screen overflow-auto">
-                             <div class="bg-white p-4 space-y-4 rounded-md">
-                                 <!-- dummyimage  -->
-                                 <div class="bg-gray-200 rounded-md aspect-video">
-     
-                                 </div>
-                                 <div class="space-y-4">
-                                     <h2 class="text-xl font-bold"> Mango tree</h2>
-                                     <p class="text-gray-500">
-                                         A fast-growing tropical tree that produces delicious, juicy mangoes during summer.
-                                         Its dense green
-                                     </p>
-                                     <div class="flex items-center justify-between text-lg">
-                                         <span class="text-green-700 bg-green-light rounded-full p-2 px-4"> Fruit tree</span>
-                                         <p>৳500</p>
-                                     </div>
-                                     <button class="bg-green-dark py-3 text-white w-full rounded-full text-lg"> Add to
-                                         Cart</button>
-                                 </div>
-                             </div>
-                             <div class="bg-white p-4 space-y-4 rounded-md">
-                                 <!-- dummyimage  -->
-                                 <div class="bg-gray-200 rounded-md aspect-video">
-     
-                                 </div>
-                                 <div class="space-y-4">
-                                     <h2 class="text-xl font-bold"> Mango tree</h2>
-                                     <p class="text-gray-500">
-                                         A fast-growing tropical tree that produces delicious, juicy mangoes during summer.
-                                         Its dense green
-                                     </p>
-                                     <div class="flex items-center justify-between text-lg">
-                                         <span class="text-green-700 bg-green-light rounded-full p-2 px-4"> Fruit tree</span>
-                                         <p>৳500</p>
-                                     </div>
-                                     <button class="bg-green-dark py-3 text-white w-full rounded-full text-lg"> Add to
-                                         Cart</button>
-                                 </div>
-                             </div>
-                             <div class="bg-white p-4 space-y-4 rounded-md">
-                                 <!-- dummyimage  -->
-                                 <div class="bg-gray-200 rounded-md aspect-video">
-     
-                                 </div>
-                                 <div class="space-y-4">
-                                     <h2 class="text-xl font-bold"> Mango tree</h2>
-                                     <p class="text-gray-500">
-                                         A fast-growing tropical tree that produces delicious, juicy mangoes during summer.
-                                         Its dense green
-                                     </p>
-                                     <div class="flex items-center justify-between text-lg">
-                                         <span class="text-green-700 bg-green-light rounded-full p-2 px-4"> Fruit tree</span>
-                                         <p>৳500</p>
-                                     </div>
-                                     <button class="bg-green-dark py-3 text-white w-full rounded-full text-lg"> Add to
-                                         Cart</button>
-                                 </div>
-                             </div>
-                         </div>
-                     </div>
+                    <div class="w-full">
+                        <div id='cardLoader' class="py-28 flex items-center justify-center">
+                            <l-ring size="40" stroke="5" bg-opacity="0" speed="2" color="black"></l-ring>
+                        </div >
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-8 md:max-h-screen overflow-auto"
+                            id="card-container">
+
+                        </div>
+                    </div>
+                    
                     <!-- my cart  -->
                     <div class="space-y-4 bg-white p-4 rounded-lg " id="cart">
                         <h3 class="text-2xl font-bold"> Your Cart </h3>
@@ -215,12 +172,13 @@
             </section>
 
         </div>
-            
-            
+
+
         <!-- our impact seciton  -->
         <section class="space-y-6 m-auto py-24 px-12 md:px-24 bg-green-light ">
             <h2 class="section-title text-black mb-12"> Our Impact </h2>
-            <div class=" flex flex-col sm:flex-row *:w-full sm:*:w-1/2  items-center justify-center gap-4 sm:gap-8 max-w-[1650px]">
+            <div
+                class=" flex flex-col sm:flex-row *:w-full sm:*:w-1/2  items-center justify-center gap-4 sm:gap-8 max-w-[1650px] m-auto">
                 <div class="text-center bg-white p-10 rounded-lg space-y-2">
                     <h3 class="text-3xl font-bold"> 500k+</h3>
                     <p> Tree planted</p>
@@ -235,6 +193,7 @@
                 </div>
             </div>
         </section>
+
         <!-- donate form section  -->
         <section class=" bg-[#166534] space-y-6 p-12 md:p-28 ">
             <h2 class="section-title text-white"> Plant a Tree today</h2>
@@ -254,14 +213,15 @@
         </footer>
 
 
-        <div class="fixed right-0 bottom-0 m-6 rounded-full flex items-center gap-2 lg:hidden bg-green-900/60 backdrop-blur-md text-white p-4 px-8 text-xl transition-all active:scale-90 active:border-2" onclick="focusCart()">
+        <div class="fixed right-0 bottom-0 m-6 rounded-full flex items-center gap-2 lg:hidden bg-green-900/60 backdrop-blur-md text-white p-4 px-8 text-xl transition-all active:scale-90 active:border-2"
+            onclick="focusCart()">
             <i class="ph ph-shopping-cart"></i>
-             
+
         </div>
 
     </body>
 
     <script src="./index.js"></script>
-
+    <script type="module" src="https://cdn.jsdelivr.net/npm/ldrs/dist/auto/ring.js"></script>
 
 </html>
