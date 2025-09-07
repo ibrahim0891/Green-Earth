@@ -11,16 +11,12 @@ let getDataFromServer = async (url) => {
     return data;
 }
 
-let loadingTemplate = `
-    <div class="py-12 flex items-center justify-center">
-    <l-ring size="40" stroke="5" bg-opacity="0" speed="2" color="black"></l-ring>
-    </div>
-`
 
 let sidebar = getElement('sidebar')
 let cart = getElement('cart')
 let cardContainer = getElement('card-container')
 let categoryContainer = getElement("categories")
+let modalContainer = getElement("modal-container")
 
 let cardLoader = getElement('cardLoader')
 let totalPriceDisplay = getElement('total-price')
@@ -37,40 +33,20 @@ let focusCart = (e) => {
     bringIntoView(cart)
 }
 
-let categoryTemplate = (categoryName) => ` <span class="shrink-0 "> ${categoryName}</span>`
-
-
-let categoryUrl = 'https://openapi.programming-hero.com/api/categories'
-
-
-
-let loadCategories = async () => {
-    categoryContainer.innerHTML = ''
-    let data = await getDataFromServer(categoryUrl);
-    data.categories.forEach((category) => {
-        categoryContainer.innerHTML += categoryTemplate(category.category_name)
-    })
-
-    let categories = [...categoryContainer.children]
-    categories[0].classList.add('active')
-
-    categories.forEach(el => {
-        el.addEventListener('click', (e) => {
-            categories.forEach((el) => {
-                el.classList.remove('active')
-            })
-            cardLoader.style.display = 'flex'
-            cardContainer.innerHTML = ''
-            e.target.classList.add('active')
-            let selectCategroyByIndex = categories.indexOf(e.target) + 1
-            setTimeout(() => {
-                loadTreesByCategory(selectCategroyByIndex)
-            }, 1500);
-        })
-    })
-
+let openModal = () => {
+    modalContainer.classList.remove('hidden')
+}
+let closeModal = () => {
+    modalContainer.classList.add('hidden')
 }
 
+
+let loadingTemplate = `
+    <div class="py-12 flex items-center justify-center">
+        <l-ring size="40" stroke="5" bg-opacity="0" speed="2" color="black"></l-ring>
+    </div>
+`
+let categoryTemplate = (categoryName) => ` <span class="shrink-0 "> ${categoryName}</span>`
 
 let cartTemplate = (data) => {
     let { id, name, price, quantity, totalPrice } = data
@@ -97,55 +73,6 @@ let emptyCartTemplate = `
     </div>
 `
 
-let cartArray = []
-
-let deleteItem = (id) => {
-    let targetElementIndex = cartArray.indexOf(cartArray.find(item => item.id == id ))
-    cartArray.splice(targetElementIndex , 1)
-    reRenderCart()
-}
-
-let reRenderCart = () => {
-    cart.innerHTML = ''
-    cartArray.forEach(el => {
-        cart.innerHTML += cartTemplate(el)
-    })
-    totalPriceDisplay.innerText = totalPrice()
-    cartCount.innerText = cartArray.length
-    cartArray.length == 0 && (cart.innerHTML = emptyCartTemplate)
-
-}
-let addToCartArray = (data) => {
-    let match = cartArray.find((item) => item.id == data.id)
-    if (!match) {
-        cartArray.unshift(data)
-        cart.innerHTML += cartTemplate(data)
-        totalPriceDisplay.innerText = totalPrice()
-    } else {
-        let matchedIndex = cartArray.indexOf(match)
-        let matchedItem = cartArray[matchedIndex]
-        matchedItem['quantity'] += 1
-        matchedItem['totalPrice'] = matchedItem.quantity * matchedItem.price
-        reRenderCart()
-    }
-}
-let addToCart = (id, name, price) => {
-    let itemData = {
-        id,
-        name,
-        price,
-        quantity: 1,
-        totalPrice: price
-    }
-    addToCartArray(itemData) 
-    reRenderCart()
-}
-
-let totalPrice = () => {
-    let price = cartArray.map(item => item.totalPrice).reduce((a, b) => a + b, 0)
-    return price
-}
-
 let treeCardTemplate = (data) => {
     let { id, image, name, description, price, category } = data
     return `
@@ -154,7 +81,7 @@ let treeCardTemplate = (data) => {
             <img src=${image} class="w-full h-full object-cover rounded-lg" alt="">
         </div>
         <div class="space-y-4">
-            <h2 class="text-xl font-bold"> ${name}</h2>
+            <h2 class="text-xl font-bold" > ${name}</h2>
             <p class="text-gray-500 text-sm md:text-md">
                 ${description}
             </p>
@@ -169,6 +96,90 @@ let treeCardTemplate = (data) => {
     </div>
   `
 }
+
+let loadCategories = async () => {
+    let categoryUrl = 'https://openapi.programming-hero.com/api/categories'
+    categoryContainer.innerHTML = ''
+    let data = await getDataFromServer(categoryUrl);
+    data.categories.forEach((category) => {
+        categoryContainer.innerHTML += categoryTemplate(category.category_name)
+    })
+
+    let categories = [...categoryContainer.children]
+    categories[0].classList.add('active')
+
+    categories.forEach(el => {
+        el.addEventListener('click', (e) => {
+            categories.forEach((el) => {
+                el.classList.remove('active')
+            })
+            cardLoader.style.display = 'flex'
+            cardContainer.innerHTML = ''
+            e.target.classList.add('active')
+            let selectCategroyByIndex = categories.indexOf(e.target) + 1
+            setTimeout(() => {
+                loadTreesByCategory(selectCategroyByIndex)
+            }, 1500);
+        })
+    })
+}
+
+let getPlantDetail = async (id) => {
+    let plantDetailUrl = `https://openapi.programming-hero.com/api/plant/${id}`
+    let data = await getDataFromServer(plantDetailUrl)
+    console.log(data);
+}
+getPlantDetail(1)
+
+let cartArray = []
+
+let deleteItem = (id) => {
+    let targetElementIndex = cartArray.indexOf(cartArray.find(item => item.id == id ))
+    cartArray.splice(targetElementIndex , 1)
+    reRenderCart()
+}
+let totalPrice = () => {
+    let price = cartArray.map(item => item.totalPrice).reduce((a, b) => a + b, 0)
+    return price
+}
+let reRenderCart = () => {
+    cart.innerHTML = ''
+    cartArray.forEach(el => {
+        cart.innerHTML += cartTemplate(el)
+    })
+    totalPriceDisplay.innerText = totalPrice()
+    cartCount.innerText = cartArray.length
+    cartArray.length == 0 && (cart.innerHTML = emptyCartTemplate)
+}
+
+let addToCartArray = (data) => {
+    let match = cartArray.find((item) => item.id == data.id)
+    if (!match) {
+        cartArray.unshift(data)
+        cart.innerHTML += cartTemplate(data)
+        totalPriceDisplay.innerText = totalPrice()
+    } else {
+        let matchedIndex = cartArray.indexOf(match)
+        let matchedItem = cartArray[matchedIndex]
+        matchedItem['quantity'] += 1
+        matchedItem['totalPrice'] = matchedItem.quantity * matchedItem.price
+        reRenderCart()
+    }
+}
+
+let addToCart = (id, name, price) => {
+
+    let itemData = {
+        id,
+        name,
+        price,
+        quantity: 1,
+        totalPrice: price
+    }
+    addToCartArray(itemData) 
+    reRenderCart()
+}
+
 
 let loadTreesByCategory = async (id) => {
     let treeUrl = `https://openapi.programming-hero.com/api/category/${id}`

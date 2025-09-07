@@ -41,9 +41,11 @@
             <nav class="flex flex-col sm:flex-row gap-6 items-center justify-between px-6 py-3 max-w-[1650px] m-auto">
                 <div class="w-full ">
                     <div class="flex items-center justify-between">
-                        <h1 class="font-bold text-xl w-[200px]"> 
-                            <img src="https://cdn2.iconfinder.com/data/icons/renewable-energy-25/512/05_GREEN_ENERGY.png" class="w-10 mr-2 inline" alt="">
-                            Green Earth</h1>
+                        <h1 class="font-bold text-xl w-[200px]">
+                            <img src="https://cdn2.iconfinder.com/data/icons/renewable-energy-25/512/05_GREEN_ENERGY.png"
+                                class="w-10 mr-2 inline" alt="">
+                            Green Earth
+                        </h1>
 
                         <div id="sidebar"
                             class="fixed top-0 right-0 bg-white text-black    w-0 h-full z-10 overflow-hidden transition-all duration-500 sm:hidden">
@@ -105,7 +107,7 @@
                         <h3 class="text-2xl font-bold">Categories </h3>
                         <div class="text-green-800 flex *:px-6 *:py-3 *:rounded-md *:transition-all *:hover:scale-105 lg:overflow-hidden  overflow-y-auto lg:grid"
                             id="categories">
-                             
+
                             <div class="flex items-center justify-center w-full py-3">
                                 <l-ring size="40" stroke="5" bg-opacity="0" speed="2" color="black"></l-ring>
                             </div>
@@ -116,25 +118,26 @@
                     <div class="w-full">
                         <div id='cardLoader' class="py-28 flex items-center justify-center">
                             <l-ring size="40" stroke="5" bg-opacity="0" speed="2" color="black"></l-ring>
-                        </div >
+                        </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-8 md:max-h-screen overflow-auto"
                             id="card-container">
 
                         </div>
                     </div>
-                    
+
                     <!-- my cart  -->
-                    <div class="space-y-4 bg-white p-4 rounded-lg " >
+                    <div class="space-y-4 bg-white p-4 rounded-lg ">
                         <h3 class="text-2xl font-bold"> Your Cart </h3>
                         <div class="max-h-full overflow-auto">
                             <div class="text-green-800 grid *:px-6 *:py-3 *:rounded-md gap-4 " id="cart">
                                 <div>
-                                    <img src="https://cdn2.iconfinder.com/data/icons/scenes-19/1000/e-commerce___online_shopping_buy_purchase_empty_cart_order-512.png" class="w-48 m-auto" alt="">
+                                    <img src="https://cdn2.iconfinder.com/data/icons/scenes-19/1000/e-commerce___online_shopping_buy_purchase_empty_cart_order-512.png"
+                                        class="w-48 m-auto" alt="">
                                     <p class="text-center text-lg font-semibold my-12 text-black"> Cart is Empty</p>
                                 </div>
                             </div>
                         </div>
-                            
+
                         <div class=" sticky bottom-0 py-4 px-6 text-xl flex items-center justify-between font-bold">
                             <p>Total</p>
                             <p id="total-price"> 0 </p>
@@ -148,7 +151,9 @@
                 <h2 class="section-title "> About the Campaign</h2>
                 <div class="flex flex-col sm:flex-row items-center justify-center lg:w-2/3 m-auto gap-8">
 
-                    <img src="./assets/about.png" class="w-full md:aspect-[3/2] object-cover object-top sm:w-1/2   rounded-2xl" alt="A plant with some leaf">
+                    <img src="./assets/about.png"
+                        class="w-full md:aspect-[3/2] object-cover object-top sm:w-1/2   rounded-2xl"
+                        alt="A plant with some leaf">
 
                     <div class="space-y-6 text-gray-500">
                         <p>
@@ -215,6 +220,37 @@
             onclick="focusCart(this)">
             <i class="ph ph-shopping-cart"></i>
             <span id="cart-count">0</span>
+        </div>
+
+        <div
+            class="inset-0 fixed top-0 left-0 bg-green-900/80 backdrop-blur-lg z-30 flex items-center justify-center p-12 hidden" id="modal-container">
+            <div class="bg-white w-full max-w-80 rounded-xl">
+                <div class="bg-white p-6 rounded-xl space-y-4  ">
+                    <div class="w-full aspect-video">
+                        <img src=${image} class="w-full h-full object-cover rounded-lg" alt="">
+                    </div>
+                    <div class="space-y-4">
+                        <h2 class="text-xl font-bold"> ${name}</h2>
+                        <p class="text-gray-500 text-sm md:text-md">
+                            ${description}
+                        </p>
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="text-green-700 bg-green-light rounded-full p-2 px-4"> ${category}</span>
+                            <p>৳${price}</p>
+                        </div>
+                        <div class="flex items-center justify-between gap-4 text-xs">
+                            <button onclick="addToCart(${id},'${name}',${price})"
+                                class="bg-green-light py-3 text-green-900 w-full rounded-full transition-all active:scale-90">
+                                Close
+                            </button>
+                            <button onclick="addToCart(${id},'${name}',${price})"
+                                class="bg-green-dark py-3 text-white w-full rounded-full transition-all active:scale-90">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </body>
