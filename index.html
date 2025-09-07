@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 
     <head>
         <meta charset="UTF-8">
@@ -41,7 +41,9 @@
             <nav class="flex flex-col sm:flex-row gap-6 items-center justify-between px-6 py-3 max-w-[1650px] m-auto">
                 <div class="w-full ">
                     <div class="flex items-center justify-between">
-                        <h1 class="font-bold text-xl w-[200px]">Green Earth</h1>
+                        <h1 class="font-bold text-xl w-[200px]"> 
+                            <img src="https://cdn2.iconfinder.com/data/icons/renewable-energy-25/512/05_GREEN_ENERGY.png" class="w-10 mr-2 inline" alt="">
+                            Green Earth</h1>
 
                         <div id="sidebar"
                             class="fixed top-0 right-0 bg-white text-black    w-0 h-full z-10 overflow-hidden transition-all duration-500 sm:hidden">
@@ -53,17 +55,17 @@
 
                                 <div class="text-md flex flex-col sm:flex-row gap-4 *:hover:underline xs:*:w-full *:transition-all
                             *:hover:scale-105 *:p-4   *:border   *:rounded-lg *:border-gray-200">
-                                    <a href="">About</a>
-                                    <a href="">Gallery</a>
-                                    <a href="">Plant a tree</a>
+                                    <a href="#about">About</a>
+                                    <a href="#card-container">Gallery</a>
+                                    <a href="#form">Plant a tree</a>
                                 </div>
                             </div>
                         </div>
 
                         <div class="text-md flex-col sm:flex-row gap-4 *:hover:underline   *:p-4  hidden sm:flex">
-                            <a href="">About</a>
-                            <a href="">Gallery</a>
-                            <a href="">Plant a tree</a>
+                            <a href="#about">About</a>
+                            <a href="#card-container">Gallery</a>
+                            <a href="#form">Plant a tree</a>
                         </div>
 
                         <div class="flex items-center gap-4">
@@ -97,7 +99,7 @@
             <section class="space-y-6 ">
                 <h2 class="section-title "> Choose Your Tree</h2>
                 <div
-                    class="grid grid-cols-1 lg:grid-cols-[1fr_2fr_1fr] xl:grid-cols-[1fr_3fr_1fr] 2xl:grid-cols-[1fr_5fr_1fr] gap-8">
+                    class="grid grid-cols-1 lg:grid-cols-[1fr_2fr_1fr] xl:grid-cols-[1fr_3fr_312px] 2xl:grid-cols-[1fr_5fr_312px] gap-8">
                     <!-- category -->
                     <div class="space-y-4 ">
                         <h3 class="text-2xl font-bold">Categories </h3>
@@ -122,35 +124,31 @@
                     </div>
                     
                     <!-- my cart  -->
-                    <div class="space-y-4 bg-white p-4 rounded-lg " id="cart">
+                    <div class="space-y-4 bg-white p-4 rounded-lg " >
                         <h3 class="text-2xl font-bold"> Your Cart </h3>
-                        <div class="text-green-800 grid *:px-6 *:py-3 *:rounded-md ">
-                            <div class="bg-green-50 rounded-md p-4 flex items-center justify-between">
+                        <div class="max-h-full overflow-auto">
+                            <div class="text-green-800 grid *:px-6 *:py-3 *:rounded-md gap-4 " id="cart">
                                 <div>
-                                    <h4 class="text-xl font-semibold"> ${treename}</h4>
-                                    <p>
-                                        ৳${price} × ${quantity}
-                                    </p>
+                                    <img src="https://cdn2.iconfinder.com/data/icons/scenes-19/1000/e-commerce___online_shopping_buy_purchase_empty_cart_order-512.png" class="w-48 m-auto" alt="">
+                                    <p class="text-center text-lg font-semibold my-12 text-black"> Cart is Empty</p>
                                 </div>
-                                <button>
-                                    <i class="ph ph-x"></i>
-                                </button>
                             </div>
                         </div>
-                        <div class="  py-2 text-md flex items-center justify-between font-bold">
+                            
+                        <div class=" sticky bottom-0 py-4 px-6 text-xl flex items-center justify-between font-bold">
                             <p>Total</p>
-                            <p> ${totalPrice} </p>
+                            <p id="total-price"> 0 </p>
                         </div>
                     </div>
                 </div>
             </section>
 
             <!-- about section  -->
-            <section class="space-y-8 max-w-[1650px] m-auto my-12">
+            <section class="space-y-12 max-w-[1650px] m-auto my-12" id="about">
                 <h2 class="section-title "> About the Campaign</h2>
                 <div class="flex flex-col sm:flex-row items-center justify-center lg:w-2/3 m-auto gap-8">
 
-                    <img src="./assets/about.png" class="w-full sm:w-1/2  rounded-2xl" alt="A plant with some leaf">
+                    <img src="./assets/about.png" class="w-full md:aspect-[3/2] object-cover object-top sm:w-1/2   rounded-2xl" alt="A plant with some leaf">
 
                     <div class="space-y-6 text-gray-500">
                         <p>
@@ -195,7 +193,7 @@
         </section>
 
         <!-- donate form section  -->
-        <section class=" bg-[#166534] space-y-6 p-12 md:p-28 ">
+        <section class=" bg-[#166534] space-y-6 p-12 md:p-28 " id="form">
             <h2 class="section-title text-white"> Plant a Tree today</h2>
             <form class="bg-[#15803d] w-full  m-auto p-8 gap-4 flex flex-col max-w-[650px] rounded-xl ">
                 <input class="bg-white text-green-800 block px-6 py-3 rounded-lg" type="text" name="" id=""
@@ -213,10 +211,10 @@
         </footer>
 
 
-        <div class="fixed right-0 bottom-0 m-6 rounded-full flex items-center gap-2 lg:hidden bg-green-900/60 backdrop-blur-md text-white p-4 px-8 text-xl transition-all active:scale-90 active:border-2"
-            onclick="focusCart()">
+        <div class="fixed right-0 bottom-0 m-6 rounded-full flex items-center gap-2 cursor-pointer lg:hidden bg-green-900/60 backdrop-blur-md text-white p-4 px-8 text-xl transition-all active:scale-90 active:border-2"
+            onclick="focusCart(this)">
             <i class="ph ph-shopping-cart"></i>
-
+            <span id="cart-count">0</span>
         </div>
 
     </body>

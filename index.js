@@ -23,6 +23,8 @@ let cardContainer = getElement('card-container')
 let categoryContainer = getElement("categories")
 
 let cardLoader = getElement('cardLoader')
+let totalPriceDisplay = getElement('total-price')
+let cartCount = getElement('cart-count')
 
 
 let openSidebar = () => {
@@ -31,7 +33,7 @@ let openSidebar = () => {
 let closeSidebar = () => {
     sidebar.style.width = '0'
 }
-let focusCart = () => {
+let focusCart = (e) => {  
     bringIntoView(cart)
 }
 
@@ -61,16 +63,73 @@ let loadCategories = async () => {
             cardContainer.innerHTML = ''
             e.target.classList.add('active')
             let selectCategroyByIndex = categories.indexOf(e.target) + 1
-            loadTreesByCategory(selectCategroyByIndex)
+            setTimeout(() => {
+                loadTreesByCategory(selectCategroyByIndex)
+            }, 1500);
         })
     })
 
 }
 
 
+let cartTemplate = (data) => {
+    let { id, name, price, quantity, totalPrice } = data
+    // console.log(data);
+    return `
+  <div class="bg-green-50 rounded-md p-4 flex items-center justify-between">
+    <div>
+        <h4 class="text-xl font-semibold"> ${name}</h4>
+        <p>
+            ৳${price} × ${quantity} = ${totalPrice}
+        </p>
+    </div>
+    <button class="p-2 bg-red-50" onclick='deleteItem(${id})'>
+        <i class="ph ph-x"></i>
+    </button>
+</div>
+  `
+}
+
+let emptyCartTemplate = `
+    <div>
+        <img src="https://cdn2.iconfinder.com/data/icons/scenes-19/1000/e-commerce___online_shopping_buy_purchase_empty_cart_order-512.png" class="w-48 m-auto" alt="">
+        <p class="text-center text-lg font-semibold my-12 text-black"> Cart is Empty</p>
+    </div>
+`
+
 let cartArray = []
 
-let addToCartArray = (id, name, price) => {
+let deleteItem = (id) => {
+    let targetElementIndex = cartArray.indexOf(cartArray.find(item => item.id == id ))
+    cartArray.splice(targetElementIndex , 1)
+    reRenderCart()
+}
+
+let reRenderCart = () => {
+    cart.innerHTML = ''
+    cartArray.forEach(el => {
+        cart.innerHTML += cartTemplate(el)
+    })
+    totalPriceDisplay.innerText = totalPrice()
+    cartCount.innerText = cartArray.length
+    cartArray.length == 0 && (cart.innerHTML = emptyCartTemplate)
+
+}
+let addToCartArray = (data) => {
+    let match = cartArray.find((item) => item.id == data.id)
+    if (!match) {
+        cartArray.unshift(data)
+        cart.innerHTML += cartTemplate(data)
+        totalPriceDisplay.innerText = totalPrice()
+    } else {
+        let matchedIndex = cartArray.indexOf(match)
+        let matchedItem = cartArray[matchedIndex]
+        matchedItem['quantity'] += 1
+        matchedItem['totalPrice'] = matchedItem.quantity * matchedItem.price
+        reRenderCart()
+    }
+}
+let addToCart = (id, name, price) => {
     let itemData = {
         id,
         name,
@@ -78,30 +137,19 @@ let addToCartArray = (id, name, price) => {
         quantity: 1,
         totalPrice: price
     }
-    let addToCartArray = (id) => {
-        let match = cartArray.find((item) => item.id == id)
-        if (!match) {
-            cartArray.push(itemData)
-        } else {
-            let matchedIndex = cartArray.indexOf(match)
-            let matchedItem = cartArray[matchedIndex]
-            matchedItem['quantity'] += 1
-            matchedItem['totalPrice'] = matchedItem.quantity * matchedItem.price
-        }
-    }
-    addToCartArray(id)
-    totalPrice()
+    addToCartArray(itemData) 
+    reRenderCart()
 }
 
 let totalPrice = () => {
-    let priceArray = cartArray.map(item => item.totalPrice).reduce((a,b)=> a+b , 0)
-    console.log(priceArray);
+    let price = cartArray.map(item => item.totalPrice).reduce((a, b) => a + b, 0)
+    return price
 }
 
 let treeCardTemplate = (data) => {
     let { id, image, name, description, price, category } = data
     return `
-  <div class="bg-white p-4 space-y-4 rounded-md"> 
+  <div class="bg-white p-6 rounded-xl space-y-4 rounded-md"> 
         <div class="w-full aspect-video">
             <img src=${image} class="w-full h-full object-cover rounded-lg" alt="">
         </div>
@@ -114,7 +162,7 @@ let treeCardTemplate = (data) => {
                 <span class="text-green-700 bg-green-light rounded-full p-2 px-4"> ${category}</span>
                 <p>৳${price}</p>
             </div>
-            <button onclick="addToCartArray(${id},'${name}',${price})" class="bg-green-dark py-3 text-white w-full rounded-full text-lg">
+            <button onclick="addToCart(${id},'${name}',${price})" class="bg-green-dark py-3 text-white w-full rounded-full text-lg transition-all active:scale-90">
                 Add to Cart
             </button>
         </div>
