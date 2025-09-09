@@ -34,9 +34,18 @@ let focusCart = (e) => {
 
 let openModal = async (id) => { 
     modalContainer.classList.remove('hidden')
-     loadModalData(id)
+    let randomDelay = Math.floor(Math.random() * 1001) + 1500 
+    setTimeout(() => {
+        loadModalData(id)
+    }, randomDelay);
 }
 let closeModal = () => {
+    modalContainer.innerHTML = `
+    <div class="mx-w-96 w-60 flex items-center justify-center bg-white rounded-xl aspect-square">
+        <div class="py-12 flex items-center justify-center">
+            <l-ring size="40" stroke="5" bg-opacity="0" speed="2" color="black"></l-ring>
+        </div>
+    </div>`
     modalContainer.classList.add('hidden')
 }
 
@@ -54,7 +63,7 @@ let modalTemplate = (data) => {
                 <img src=${image} class="w-full h-full object-cover rounded-lg" alt="">
             </div>
             <div class="space-y-4">
-                <h2 class="text-xl font-bold"> ${name}</h2>
+                <h2 class="text-xl font-bold "> ${name}</h2>
                 <p class="text-gray-500 text-sm md:text-md">
                     ${description}
                 </p>
@@ -118,7 +127,7 @@ let treeCardTemplate = (data) => {
             <img src=${image} class="w-full h-full object-cover rounded-lg" alt="">
         </div>
         <div class="space-y-4">
-            <h2 class="text-xl font-bold" onclick='openModal(${id})' > ${name}</h2>
+            <h2 class="text-xl font-bold hover:underline cursor-pointer" onclick='openModal(${id})' > ${name}</h2>
             <p class="text-gray-500 text-sm md:text-md">
                 ${description}
             </p>
