@@ -130,7 +130,7 @@ var myString = "my name is ibrahim" + "i am" + age + "years old"
 //result: my name is ibrahimi am10years old. 
 ```
 
-This is where string literals comes to save our life. we can write stirngs with (`) this. It is called the backtick. This helps us to write expression right into the string. we can use quotation inside as like as we want. We have to pay less attention in formating string because this produced result is almost like what we see. 
+This is where string literals comes to save our life. we can write stirngs with (`) this. It is called the backtick. This helps us to write expression right into the string. we can use quotation inside as like as we want. We have to pay less attention in formating string because the produced result is almost like what we see. 
 
 Example of string literal: 
 ```js
