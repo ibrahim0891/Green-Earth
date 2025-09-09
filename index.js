@@ -1,5 +1,3 @@
-
-
 let getElement = (id) => {
     return document.getElementById(id)
 }
@@ -11,8 +9,8 @@ let getDataFromServer = async (url) => {
         let res = await fetch(url)
         let data = await res.json()
         return data;
-    } catch (error) {  
-        return false //false return korchi jate pore conditionaly step newya ay
+    } catch (error) {
+        return false 
     }
 }
 
@@ -25,7 +23,25 @@ let modalContainer = getElement("modal-container")
 let cardLoader = getElement('cardLoader')
 let totalPriceDisplay = getElement('total-price')
 let cartCount = getElement('cart-count')
+let toast = getElement('toast')
 
+let toastDisplayDuration = 2000
+
+
+
+let showToast = (message , toastDisplayTime = toastDisplayDuration) => {
+    toast.classList.remove('translate-y-36')
+    toast.classList.add('translate-y-0')
+    toast.innerText = message
+    setTimeout(() => {
+        hideToast()
+    }, toastDisplayTime);
+}
+
+let hideToast = () => {
+    toast.classList.add('translate-y-36')
+    toast.classList.remove('translate-y-0')
+}
 
 let openSidebar = () => {
     sidebar.style.width = '66%'
@@ -33,6 +49,7 @@ let openSidebar = () => {
 let closeSidebar = () => {
     sidebar.style.width = '0'
 }
+
 let focusCart = (e) => {
     bringIntoView(cart)
 }
@@ -44,6 +61,7 @@ let openModal = async (id) => {
         loadModalData(id)
     }, randomDelay);
 }
+
 let closeModal = () => {
     modalContainer.innerHTML = `
     <div class="mx-w-96 w-60 flex items-center justify-center bg-white rounded-xl aspect-square">
@@ -108,6 +126,7 @@ let loadingTemplate = `
         <l-ring size="40" stroke="5" bg-opacity="0" speed="2" color="black"></l-ring>
     </div>
 `
+
 let categoryTemplate = (categoryName) => ` <span class="shrink-0 "> ${categoryName}</span>`
 
 let cartTemplate = (data) => {
@@ -167,7 +186,7 @@ let loadCategories = async () => {
     data.categories.forEach((category) => {
         categoryContainer.innerHTML += categoryTemplate(category.category_name)
     })
-    
+
     let categories = [...categoryContainer.children]
     categories[0].classList.add('active')
 
@@ -198,15 +217,6 @@ let loadCategories = async () => {
 
 let cartArray = []
 
-let deleteItem = (id) => {
-    let targetElementIndex = cartArray.indexOf(cartArray.find(item => item.id == id))
-    cartArray.splice(targetElementIndex, 1)
-    reRenderCart()
-}
-let totalPrice = () => {
-    let price = cartArray.map(item => item.totalPrice).reduce((a, b) => a + b, 0)
-    return price
-}
 let reRenderCart = () => {
     cart.innerHTML = ''
     cartArray.forEach(el => {
@@ -217,23 +227,35 @@ let reRenderCart = () => {
     cartArray.length == 0 && (cart.innerHTML = emptyCartTemplate)
 }
 
+let deleteItem = (id) => {
+    let targetElementIndex = cartArray.indexOf(cartArray.find(item => item.id == id))
+    let removedItem = cartArray[targetElementIndex]
+    showToast(`${removedItem.name} removed from cart.`)
+    cartArray.splice(targetElementIndex, 1)
+    reRenderCart()
+}
+let totalPrice = () => {
+    return cartArray.map(item => item.totalPrice).reduce((a, b) => a + b, 0)
+}
+
 let addToCartArray = (data) => {
     let match = cartArray.find((item) => item.id == data.id)
     if (!match) {
         cartArray.unshift(data)
         cart.innerHTML += cartTemplate(data)
         totalPriceDisplay.innerText = totalPrice()
+        showToast(`${data.name} added to cart`)
     } else {
         let matchedIndex = cartArray.indexOf(match)
         let matchedItem = cartArray[matchedIndex]
         matchedItem['quantity'] += 1
         matchedItem['totalPrice'] = matchedItem.quantity * matchedItem.price
+        showToast(`${data.name}'s quantity updated.`)
         reRenderCart()
     }
 }
 
 let addToCart = (id, name, price) => {
-
     let itemData = {
         id,
         name,
@@ -255,8 +277,6 @@ let loadTreesByCategory = async (id) => {
         cardContainer.innerHTML += treeCardTemplate(plant)
     })
 }
-
-loadCategories()
 
 let getPlantDetail = async (id) => {
     let plantDetailUrl = `https://openapi.programming-hero.com/api/plant/${id}`
@@ -283,5 +303,7 @@ let loadAllPlants = async () => {
         if (error) cardLoader.innerHTML = errorTemplate(error.message , error.cause)
     }
 }
- 
+
+loadCategories()
 loadAllPlants() 
+showToast('Welcome to Green Earth Society!' , 4000)

@@ -81,7 +81,7 @@
         <!-- hero section  -->
         <section
             class="flex items-center justify-between bg-green-light  relative bg-[url('./assets/hero-leaf1.png'),_url('./assets/hero-leaf2.png')] bg-no-repeat bg-[position:left,_right]">
-            <div class="w-full backdrop-blur-xl bg-green-100/90 2xl:bg-transparent xl:backdrop-blur-none ">
+            <div class="w-full backdrop-blur-xl bg-green-100/70 2xl:bg-transparent xl:backdrop-blur-none ">
                 <div class="text-center py-24 m-auto space-y-6 px-8  ">
                     <h1 class="text-5xl font-black "> Plant a Tree, Grow a Future</h1>
                     <p class="text-lg ">Join our mission to plant 1 million trees and make the Earth greener
@@ -208,7 +208,7 @@
             </form>
         </section>
         <!-- footer  -->
-        <footer class="bg-green-dark text-white text-center py-8">
+        <footer class="bg-green-dark text-white text-center py-8" onclick="showToast('hello world')">
             <p> © 2025 Green Earth. All Rights Reserved.</p>
         </footer>
 
@@ -227,6 +227,10 @@
                     <l-ring size="40" stroke="5" bg-opacity="0" speed="2" color="black"></l-ring>
                 </div>
             </div>
+        </div>
+
+        <div class="px-6 py-2 w-4/5 z-50 sm:w-auto  fixed bottom-0 right-1/2 text-center transform translate-x-1/2 mb-12 bg-green-dark text-white font-bold rounded-full shadow-xl transition-all translate-y-36 border border-gray-100 duration-500" id="toast">
+            Added to cart
         </div>
 
     </body>
