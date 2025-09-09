@@ -1,4 +1,5 @@
 
+
 let getElement = (id) => {
     return document.getElementById(id)
 }
@@ -6,9 +7,13 @@ let bringIntoView = (el) => {
     el.scrollIntoView({ behavior: "smooth", block: "center" })
 }
 let getDataFromServer = async (url) => {
-    let res = await fetch(url)
-    let data = await res.json()
-    return data;
+    try {
+        let res = await fetch(url)
+        let data = await res.json()
+        return data;
+    } catch (error) {  
+        return false //false return korchi jate pore conditionaly step newya ay
+    }
 }
 
 let sidebar = getElement('sidebar')
@@ -54,6 +59,17 @@ let loadModalData = async (id) => {
     modalContainer.innerHTML = modalTemplate(data)
 }
 
+
+let errorTemplate = (message , cause ) =>  `
+    <div
+        class="w-full bg-red-50 cursor-not-allowed text-red-800 aspect-video max-w-[540px] xl:mt-24 sm:aspect-auto flex items-center justify-center text-center p-12 sm:p-28 rounded-md flex-col gap-2">
+        <p class="font-bold text-xl">
+            ${message}
+        </p>
+       ${cause}
+    </div>
+`
+
 let modalTemplate = (data) => {
     let { id, image, name, description, price, category } = data
     return `
@@ -88,7 +104,7 @@ let modalTemplate = (data) => {
 }
 
 let loadingTemplate = `
-    <div class="py-12 flex items-center justify-center">
+    <div class="py-12 flex items-center justify-center cursor-wait">
         <l-ring size="40" stroke="5" bg-opacity="0" speed="2" color="black"></l-ring>
     </div>
 `
@@ -147,12 +163,14 @@ let loadCategories = async () => {
     let categoryUrl = 'https://openapi.programming-hero.com/api/categories'
     let data = await getDataFromServer(categoryUrl);
     categoryContainer.innerHTML = categoryTemplate('All plants')
+    
     data.categories.forEach((category) => {
         categoryContainer.innerHTML += categoryTemplate(category.category_name)
     })
-
+    
     let categories = [...categoryContainer.children]
     categories[0].classList.add('active')
+
 
     categories.forEach((el, index) => {
         el.addEventListener('click', (e) => {
@@ -249,13 +267,21 @@ let getPlantDetail = async (id) => {
 
 let loadAllPlants = async () => {
     let allPlantsUrl = `https://openapi.programming-hero.com/api/plants`
-    let data = await getDataFromServer(allPlantsUrl)
-    cardContainer.innerHTML = ''
-    cardLoader.style.display = 'none'
-    data.plants.forEach(plant => {
-        cardContainer.innerHTML += treeCardTemplate(plant)
-    })
+    try {
+        let data = await getDataFromServer(allPlantsUrl)
+        if(!data){
+            throw new Error('Failed to get data' ,{
+                cause : 'No internet connection' , 
+            })
+        }
+        cardContainer.innerHTML = ''
+        cardLoader.style.display = 'none'
+        data.plants.forEach(plant => {
+            cardContainer.innerHTML += treeCardTemplate(plant)
+        })
+    } catch (error) {
+        if (error) cardLoader.innerHTML = errorTemplate(error.message , error.cause)
+    }
 }
-
-getPlantDetail(2)
+ 
 loadAllPlants() 
