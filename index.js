@@ -63,6 +63,7 @@ let openModal = async (id) => {
 }
 
 let closeModal = () => {
+    //adding loader again to show it next time when modal open 
     modalContainer.innerHTML = `
     <div class="mx-w-96 w-60 flex items-center justify-center bg-white rounded-xl aspect-square">
         <div class="py-12 flex items-center justify-center">
@@ -93,8 +94,8 @@ let modalTemplate = (data) => {
     return `
     <div class="bg-white w-full max-w-96 rounded-xl">
         <div class="bg-white p-6 rounded-xl space-y-4  ">
-            <div class="w-full aspect-video">
-                <img src=${image} class="w-full h-full object-cover rounded-lg" alt="">
+            <div class="w-full aspect-square">
+                <img src=${image} class="w-full h-full object-cover rounded-lg" alt="Plant image" loading='lazy'>
             </div>
             <div class="space-y-4">
                 <h2 class="text-xl font-bold "> ${name}</h2>
@@ -133,17 +134,17 @@ let cartTemplate = (data) => {
     let { id, name, price, quantity, totalPrice } = data
     
     return `
-  <div class="bg-green-50 rounded-md p-4 flex items-center justify-between">
-    <div>
-        <h4 class="text-xl font-semibold"> ${name}</h4>
-        <p>
-            ৳${price} × ${quantity} = ${totalPrice}
-        </p>
+    <div class="bg-green-50 rounded-md p-4 flex items-center justify-between">
+        <div>
+            <h4 class="text-xl font-semibold"> ${name}</h4>
+            <p>
+                ৳${price} × ${quantity} = ${totalPrice}
+            </p>
+        </div>
+        <button class="p-2 bg-red-50" onclick='deleteItem(${id})'>
+            <i class="ph ph-x"></i>
+        </button>
     </div>
-    <button class="p-2 bg-red-50" onclick='deleteItem(${id})'>
-        <i class="ph ph-x"></i>
-    </button>
-</div>
   `
 }
 
@@ -241,7 +242,7 @@ let totalPrice = () => {
 let addToCartArray = (data) => {
     let match = cartArray.find((item) => item.id == data.id)
     if (!match) {
-        cartArray.unshift(data)
+        cartArray.push(data)
         cart.innerHTML += cartTemplate(data)
         totalPriceDisplay.innerText = totalPrice()
         showToast(`${data.name} added to cart`)
@@ -250,8 +251,7 @@ let addToCartArray = (data) => {
         let matchedItem = cartArray[matchedIndex]
         matchedItem['quantity'] += 1
         matchedItem['totalPrice'] = matchedItem.quantity * matchedItem.price
-        showToast(`${data.name}'s quantity updated.`)
-        reRenderCart()
+        showToast(`${data.name}'s quantity updated.`) 
     }
 }
 

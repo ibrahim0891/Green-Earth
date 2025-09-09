@@ -9,6 +9,12 @@
         <link rel="stylesheet" type="text/css"
             href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css" />
 
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+            rel="stylesheet">
+
         <style type="text/tailwindcss">
             @theme{
                 --color-green-dark : #15803d; 
@@ -19,8 +25,8 @@
                     @apply text-center text-3xl font-bold; 
                 }
                 *{
-                    font-family: 'poppins';
-                    /* border: 1px solid red;  */
+                    /* font-family: 'arima madurai'; */ 
+                    font-family: 'poppins' , system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; 
                 }
                 .horizontal-spacer{
                     @apply my-12; 
@@ -33,6 +39,8 @@
     </head>
 
     <body class="bg-green-50">
+
+        <!-- nav section  -->
         <section class="bg-green-dark text-white sticky top-0 z-20">
             <nav class="flex flex-col sm:flex-row gap-6 items-center justify-between px-6 py-3 max-w-[1650px] m-auto">
                 <div class="w-full ">
@@ -43,6 +51,7 @@
                             Green Earth
                         </h1>
 
+                        <!-- sidebar to disply on mobile  -->
                         <div id="sidebar"
                             class="fixed top-0 right-0 bg-white text-black    w-0 h-full z-10 overflow-hidden transition-all duration-500 sm:hidden">
                             <div class="p-8 sm:p-0 space-y-8 sm:space-y-0">
@@ -51,8 +60,8 @@
                                     <i class="ph ph-x text-2xl cursor-pointer" onclick="closeSidebar()"></i>
                                 </div>
 
-                                <div class="text-md flex flex-col sm:flex-row gap-4 *:hover:underline xs:*:w-full *:transition-all
-                            *:hover:scale-105 *:p-4   *:border   *:rounded-lg *:border-gray-200">
+                                <div
+                                    class="text-md flex flex-col sm:flex-row gap-4 *:hover:underline xs:*:w-full *:transition-all *:hover:scale-105 *:p-4   *:border   *:rounded-lg *:border-gray-200">
                                     <a href="#about">About</a>
                                     <a href="#card-container">Gallery</a>
                                     <a href="#form">Plant a tree</a>
@@ -60,6 +69,7 @@
                             </div>
                         </div>
 
+                        <!-- regular links to show on screen with enough space  -->
                         <div class="text-md flex-col sm:flex-row gap-4 *:hover:underline   *:p-4  hidden sm:flex">
                             <a href="#about">About</a>
                             <a href="#card-container">Gallery</a>
@@ -81,7 +91,7 @@
         <!-- hero section  -->
         <section
             class="flex items-center justify-between bg-green-light  relative bg-[url('./assets/hero-leaf1.png'),_url('./assets/hero-leaf2.png')] bg-no-repeat bg-[position:left,_right]">
-            <div class="w-full backdrop-blur-xl bg-green-100/70 2xl:bg-transparent xl:backdrop-blur-none ">
+            <div class="w-full backdrop-blur-lg bg-green-100/90 2xl:bg-transparent xl:backdrop-blur-none ">
                 <div class="text-center py-24 m-auto space-y-6 px-8  ">
                     <h1 class="text-5xl font-black "> Plant a Tree, Grow a Future</h1>
                     <p class="text-lg ">Join our mission to plant 1 million trees and make the Earth greener
@@ -93,11 +103,14 @@
         </section>
 
         <div class="px-8 py-12 my-12 space-y-24 ">
+
             <!-- tree display section  -->
             <section class="space-y-6 ">
                 <h2 class="section-title "> Choose Your Tree</h2>
+
                 <div
                     class="grid grid-cols-1 lg:grid-cols-[1fr_2fr_1fr] xl:grid-cols-[1fr_3fr_312px] 2xl:grid-cols-[1fr_5fr_312px] gap-8">
+
                     <!-- category -->
                     <div class="space-y-4 ">
                         <h3 class="text-2xl font-bold">Categories </h3>
@@ -109,6 +122,7 @@
 
                         </div>
                     </div>
+
                     <!-- cards container  -->
                     <div class="w-full">
                         <div id='cardLoader' class=" flex items-center justify-center cursor-wait">
@@ -116,7 +130,7 @@
                                 <l-ring size="40" stroke="5" bg-opacity="0" speed="2" color="black"></l-ring>
                             </div>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-8 md:max-h-screen overflow-auto"
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-8 md:max-h-screen overflow-auto"
                             id="card-container">
 
                         </div>
@@ -125,7 +139,9 @@
                     <!-- my cart  -->
                     <div class="space-y-4 bg-white p-4 rounded-lg ">
                         <h3 class="text-2xl font-bold"> Your Cart </h3>
-                        <div class="max-h-full overflow-auto">
+                        <div class="max-h-screen overflow-auto">
+
+
                             <div class="text-green-800 grid *:px-6 *:py-3 *:rounded-md gap-4 " id="cart">
                                 <div>
                                     <img src="https://cdn2.iconfinder.com/data/icons/scenes-19/1000/e-commerce___online_shopping_buy_purchase_empty_cart_order-512.png"
@@ -207,21 +223,22 @@
                 <button class="rounded-full bg-amber-300 text-green-600 px-5 py-3"> Plant a Tree</button>
             </form>
         </section>
+
         <!-- footer  -->
         <footer class="bg-green-dark text-white text-center py-8" onclick="showToast('hello world')">
             <p> © 2025 Green Earth. All Rights Reserved.</p>
         </footer>
 
-
+        <!-- floating cart button displayed on mobile devices to reach to cart easily  -->
         <div class="fixed right-0 bottom-0 m-6 rounded-full flex items-center gap-2 cursor-pointer lg:hidden bg-green-900/60 backdrop-blur-md text-white p-4 px-8 text-xl transition-all active:scale-90 active:border-2"
             onclick="focusCart(this)">
             <i class="ph ph-shopping-cart"></i>
             <span id="cart-count">0</span>
         </div>
 
+        <!-- Modal to show details of a tree  -->
         <div class="inset-0 fixed top-0 left-0 bg-green-900/80 backdrop-blur-lg z-30 flex items-center justify-center p-12 hidden "
             id="modal-container">
-
             <div class="mx-w-96 w-60 flex items-center justify-center bg-white rounded-xl aspect-square">
                 <div class="py-12 flex items-center justify-center">
                     <l-ring size="40" stroke="5" bg-opacity="0" speed="2" color="black"></l-ring>
@@ -229,7 +246,9 @@
             </div>
         </div>
 
-        <div class="px-6 py-2 w-4/5 z-50 sm:w-auto  fixed bottom-0 right-1/2 text-center transform translate-x-1/2 mb-12 bg-green-dark text-white font-bold rounded-full shadow-xl transition-all translate-y-36 border border-gray-100 duration-500" id="toast">
+        <!-- toast message to show action details dynamically  -->
+        <div class=" py-2 px-3 sm:px-8 sm:py-4 w-5/6 z-50 sm:w-auto  fixed bottom-0 right-1/2 text-center transform translate-x-1/2 mb-12 bg-green-dark text-white font-bold rounded-lg shadow-xl transition-all translate-y-36 border border-gray-100 duration-500"
+            id="toast">
             Added to cart
         </div>
 
