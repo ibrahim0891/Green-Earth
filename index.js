@@ -11,7 +11,6 @@ let getDataFromServer = async (url) => {
     return data;
 }
 
-
 let sidebar = getElement('sidebar')
 let cart = getElement('cart')
 let cardContainer = getElement('card-container')
@@ -29,17 +28,55 @@ let openSidebar = () => {
 let closeSidebar = () => {
     sidebar.style.width = '0'
 }
-let focusCart = (e) => {  
+let focusCart = (e) => {
     bringIntoView(cart)
 }
 
-let openModal = () => {
+let openModal = async (id) => { 
     modalContainer.classList.remove('hidden')
+     loadModalData(id)
 }
 let closeModal = () => {
     modalContainer.classList.add('hidden')
 }
 
+let loadModalData = async (id) => {
+    let data = await getPlantDetail(id)
+    modalContainer.innerHTML = modalTemplate(data)
+}
+
+let modalTemplate = (data) => {
+    let { id, image, name, description, price, category } = data
+    return `
+    <div class="bg-white w-full max-w-96 rounded-xl">
+        <div class="bg-white p-6 rounded-xl space-y-4  ">
+            <div class="w-full aspect-video">
+                <img src=${image} class="w-full h-full object-cover rounded-lg" alt="">
+            </div>
+            <div class="space-y-4">
+                <h2 class="text-xl font-bold"> ${name}</h2>
+                <p class="text-gray-500 text-sm md:text-md">
+                    ${description}
+                </p>
+                <div class="flex items-center justify-between text-xs">
+                    <span class="text-green-700 bg-green-light rounded-full p-2 px-4"> ${category}</span>
+                    <p>৳${price}</p>
+                </div>
+                <div class="flex items-center justify-between gap-4 text-xs">
+                    <button onclick="closeModal()"
+                        class="bg-green-light py-3 text-green-900 w-full rounded-full transition-all active:scale-90">
+                        Close
+                    </button>
+                    <button onclick="addToCart(${id},'${name}',${price})"
+                        class="bg-green-dark py-3 text-white w-full rounded-full transition-all active:scale-90">
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    `
+}
 
 let loadingTemplate = `
     <div class="py-12 flex items-center justify-center">
@@ -50,7 +87,7 @@ let categoryTemplate = (categoryName) => ` <span class="shrink-0 "> ${categoryNa
 
 let cartTemplate = (data) => {
     let { id, name, price, quantity, totalPrice } = data
-    // console.log(data);
+    
     return `
   <div class="bg-green-50 rounded-md p-4 flex items-center justify-between">
     <div>
@@ -76,12 +113,12 @@ let emptyCartTemplate = `
 let treeCardTemplate = (data) => {
     let { id, image, name, description, price, category } = data
     return `
-  <div class="bg-white p-6 rounded-xl space-y-4 rounded-md"> 
+  <div class="bg-white p-6 space-y-4 rounded-md"> 
         <div class="w-full aspect-video">
             <img src=${image} class="w-full h-full object-cover rounded-lg" alt="">
         </div>
         <div class="space-y-4">
-            <h2 class="text-xl font-bold" > ${name}</h2>
+            <h2 class="text-xl font-bold" onclick='openModal(${id})' > ${name}</h2>
             <p class="text-gray-500 text-sm md:text-md">
                 ${description}
             </p>
@@ -99,8 +136,8 @@ let treeCardTemplate = (data) => {
 
 let loadCategories = async () => {
     let categoryUrl = 'https://openapi.programming-hero.com/api/categories'
-    categoryContainer.innerHTML = ''
     let data = await getDataFromServer(categoryUrl);
+    categoryContainer.innerHTML = categoryTemplate('All plants')
     data.categories.forEach((category) => {
         categoryContainer.innerHTML += categoryTemplate(category.category_name)
     })
@@ -108,7 +145,7 @@ let loadCategories = async () => {
     let categories = [...categoryContainer.children]
     categories[0].classList.add('active')
 
-    categories.forEach(el => {
+    categories.forEach((el, index) => {
         el.addEventListener('click', (e) => {
             categories.forEach((el) => {
                 el.classList.remove('active')
@@ -116,26 +153,27 @@ let loadCategories = async () => {
             cardLoader.style.display = 'flex'
             cardContainer.innerHTML = ''
             e.target.classList.add('active')
-            let selectCategroyByIndex = categories.indexOf(e.target) + 1
-            setTimeout(() => {
-                loadTreesByCategory(selectCategroyByIndex)
-            }, 1500);
+
+            let randomDelay = Math.floor(Math.random() * 1001) + 1500 
+
+            if (index == 0) {
+                setTimeout(() => loadAllPlants(), randomDelay);
+            } else {
+                let selectCategroyByIndex = categories.indexOf(e.target)
+                setTimeout(() => loadTreesByCategory(selectCategroyByIndex), randomDelay);
+            }
+
         })
     })
 }
 
-let getPlantDetail = async (id) => {
-    let plantDetailUrl = `https://openapi.programming-hero.com/api/plant/${id}`
-    let data = await getDataFromServer(plantDetailUrl)
-    console.log(data);
-}
-getPlantDetail(1)
+
 
 let cartArray = []
 
 let deleteItem = (id) => {
-    let targetElementIndex = cartArray.indexOf(cartArray.find(item => item.id == id ))
-    cartArray.splice(targetElementIndex , 1)
+    let targetElementIndex = cartArray.indexOf(cartArray.find(item => item.id == id))
+    cartArray.splice(targetElementIndex, 1)
     reRenderCart()
 }
 let totalPrice = () => {
@@ -176,7 +214,7 @@ let addToCart = (id, name, price) => {
         quantity: 1,
         totalPrice: price
     }
-    addToCartArray(itemData) 
+    addToCartArray(itemData)
     reRenderCart()
 }
 
@@ -192,4 +230,23 @@ let loadTreesByCategory = async (id) => {
 }
 
 loadCategories()
-loadTreesByCategory(1)
+
+let getPlantDetail = async (id) => {
+    let plantDetailUrl = `https://openapi.programming-hero.com/api/plant/${id}`
+    let data = await getDataFromServer(plantDetailUrl) 
+    return data.plants
+}
+
+
+let loadAllPlants = async () => {
+    let allPlantsUrl = `https://openapi.programming-hero.com/api/plants`
+    let data = await getDataFromServer(allPlantsUrl)
+    cardContainer.innerHTML = ''
+    cardLoader.style.display = 'none'
+    data.plants.forEach(plant => {
+        cardContainer.innerHTML += treeCardTemplate(plant)
+    })
+}
+
+getPlantDetail(2)
+loadAllPlants() 

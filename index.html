@@ -105,7 +105,7 @@
                     <!-- category -->
                     <div class="space-y-4 ">
                         <h3 class="text-2xl font-bold">Categories </h3>
-                        <div class="text-green-800 flex *:px-6 *:py-3 *:rounded-md *:transition-all *:hover:scale-105 lg:overflow-hidden  overflow-y-auto lg:grid"
+                        <div class="text-green-800 py-2 flex *:px-6 *:py-3 *:rounded-md *:transition-all *:hover:scale-105 lg:overflow-hidden  overflow-y-auto lg:grid"
                             id="categories">
 
                             <div class="flex items-center justify-center w-full py-3">
@@ -223,32 +223,11 @@
         </div>
 
         <div
-            class="inset-0 fixed top-0 left-0 bg-green-900/80 backdrop-blur-lg z-30 flex items-center justify-center p-12 hidden" id="modal-container">
-            <div class="bg-white w-full max-w-80 rounded-xl">
-                <div class="bg-white p-6 rounded-xl space-y-4  ">
-                    <div class="w-full aspect-video">
-                        <img src=${image} class="w-full h-full object-cover rounded-lg" alt="">
-                    </div>
-                    <div class="space-y-4">
-                        <h2 class="text-xl font-bold"> ${name}</h2>
-                        <p class="text-gray-500 text-sm md:text-md">
-                            ${description}
-                        </p>
-                        <div class="flex items-center justify-between text-xs">
-                            <span class="text-green-700 bg-green-light rounded-full p-2 px-4"> ${category}</span>
-                            <p>৳${price}</p>
-                        </div>
-                        <div class="flex items-center justify-between gap-4 text-xs">
-                            <button onclick="addToCart(${id},'${name}',${price})"
-                                class="bg-green-light py-3 text-green-900 w-full rounded-full transition-all active:scale-90">
-                                Close
-                            </button>
-                            <button onclick="addToCart(${id},'${name}',${price})"
-                                class="bg-green-dark py-3 text-white w-full rounded-full transition-all active:scale-90">
-                                Add to Cart
-                            </button>
-                        </div>
-                    </div>
+            class="inset-0 fixed top-0 left-0 bg-green-900/80 backdrop-blur-lg z-30 flex items-center justify-center p-12 hidden " id="modal-container">
+            
+            <div class="mx-w-96 w-60 flex items-center justify-center bg-white rounded-xl aspect-square">
+                <div class="py-12 flex items-center justify-center">
+                    <l-ring size="40" stroke="5" bg-opacity="0" speed="2" color="black"></l-ring>
                 </div>
             </div>
         </div>
